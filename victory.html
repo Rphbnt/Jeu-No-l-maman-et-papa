@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Victoire 🎄</title>
+
+<style>
+/* ===== RESET ===== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ===== BODY ===== */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: linear-gradient(180deg, #f5f6fa, #ffffff);
+  color: #111;
+  overflow-x: hidden;
+}
+
+/* ===== HERO ===== */
+.hero {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 3em;
+  margin-bottom: 20px;
+  animation: fadeDown 1.2s ease-out;
+}
+
+.hero p {
+  font-size: 1.2em;
+  opacity: 0.7;
+  animation: fadeUp 1.2s ease-out;
+}
+
+/* ===== SCROLL INDICATOR ===== */
+.scroll-indicator {
+  position: absolute;
+  bottom: 30px;
+  font-size: 1.5em;
+  animation: bounce 1.5s infinite;
+  opacity: 0.6;
+}
+
+/* ===== SECTIONS ===== */
+section {
+  padding: 100px 20px;
+  text-align: center;
+}
+
+section h2 {
+  font-size: 2.2em;
+  margin-bottom: 50px;
+}
+
+/* ===== IMAGES ===== */
+.gallery {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.gallery img {
+  width: 280px;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+  transform: translateY(50px);
+  opacity: 0;
+  transition: all 0.8s ease;
+}
+
+.gallery img.visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* ===== SANTA ===== */
+.santa {
+  margin-top: 80px;
+}
+
+.santa img {
+  width: 220px;
+  animation: float 3s ease-in-out infinite;
+}
+
+/* ===== TREE ===== */
+.christmas-tree {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+}
+
+.christmas-tree img {
+  width: 140px;
+}
+
+/* ===== SNOW ===== */
+.snowflake {
+  position: fixed;
+  top: -10px;
+  color: white;
+  pointer-events: none;
+  animation: fall linear infinite;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeDown {
+  from {opacity: 0; transform: translateY(-30px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+
+@keyframes fadeUp {
+  from {opacity: 0; transform: translateY(30px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+
+@keyframes bounce {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(10px); }
+}
+
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+@keyframes fall {
+  to { transform: translateY(110vh); }
+}
+</style>
+</head>
+
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>🎄 Mission terminée</h1>
+  <p>Mini-aventure complétée</p>
+  <div class="scroll-indicator">⬇️</div>
+</div>
+
+<!-- PHOTOS -->
+<section>
+  <h2>Souvenirs</h2>
+  <div class="gallery">
+    <img src="Marseille.jpg" alt="Famille 1">
+    <img src="ttjaune.jpg" alt="Famille 2">
+  </div>
+</section>
+
+<!-- PERE NOEL -->
+<section class="santa">
+  <h2>🎅</h2>
+  <img src="noel.webp" alt="Père Noël">
+</section>
+
+<!-- SAPIN -->
+<div class="christmas-tree">
+  <img src="286d726d2b2f45249463867a60e5f6b2.gif" alt="Sapin de Noël">
+</div>
+
+<script>
+/* ===== SNOW ===== */
+for (let i = 0; i < 50; i++) {
+  const snow = document.createElement("div");
+  snow.className = "snowflake";
+  snow.textContent = "❄️";
+  snow.style.left = Math.random() * 100 + "vw";
+  snow.style.fontSize = (10 + Math.random() * 20) + "px";
+  snow.style.animationDuration = (5 + Math.random() * 10) + "s";
+  snow.style.opacity = Math.random();
+  document.body.appendChild(snow);
+}
+
+/* ===== SCROLL ANIMATION ===== */
+const images = document.querySelectorAll(".gallery img");
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("visible");
+    }
+  });
+}, { threshold: 0.3 });
+
+images.forEach(img => observer.observe(img));
+</script>
+
+</body>
+</html>
