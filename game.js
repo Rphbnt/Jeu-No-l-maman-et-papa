@@ -1,92 +1,192 @@
-const player = document.getElementById("player");
-const game = document.getElementById("game");
-const scoreDisplay = document.getElementById("score");
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
 
-let x = window.innerWidth / 2;
-let y = window.innerHeight / 2;
-let speed = 5;
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
 let score = 0;
-const maxScore = 5;
+const scoreEl = document.getElementById("score");
+
+const santa = {
+  x: canvas.width / 2,
+  y: canvas.height / 2,
+  size: 40,
+  speed: 5
+};
+
+const keys = {};
 
 const gifts = [];
+const giftImg = new Image();
+giftImg.src = "const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
 
-/* 🎁 CRÉATION DES CADEAUX */
-for (let i = 0; i < maxScore; i++) {
-  const gift = document.createElement("img");
-  gift.src = "68324570-gift-box-with-green-ribbon-isolated-on-transparent-background-vector-illustration.jpg"; // image cadeau
-  gift.classList.add("gift");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
-  gift.style.left = Math.random() * (window.innerWidth - 50) + "px";
-  gift.style.top = Math.random() * (window.innerHeight - 50) + "px";
+let score = 0;
+const scoreEl = document.getElementById("score");
 
-  game.appendChild(gift);
-  gifts.push(gift);
+const santa = {
+  x: canvas.width / 2,
+  y: canvas.height / 2,
+  size: 40,
+  speed: 5
+};
+
+const keys = {};
+
+const gifts = [];
+const giftImg = new Image();
+giftImg.src = "68324570-gift-box-with-green-ribbon-isolated-on-transparent-background-vector-illustration.jpg"; // ➜ mets une image cadeau 🎁
+
+for (let i = 0; i < 10; i++) {
+  gifts.push({
+    x: Math.random() * (canvas.width - 40),
+    y: Math.random() * (canvas.height - 40),
+    size: 40,
+    collected: false
+  });
 }
 
-/* 🕹️ CLAVIER (PC) */
-document.addEventListener("keydown", (e) => {
-  if (e.key === "ArrowUp") y -= speed;
-  if (e.key === "ArrowDown") y += speed;
-  if (e.key === "ArrowLeft") x -= speed;
-  if (e.key === "ArrowRight") x += speed;
-  update();
-});
+/* CONTROLES PC */
+window.addEventListener("keydown", e => keys[e.key] = true);
+window.addEventListener("keyup", e => keys[e.key] = false);
 
-/* 📱 TACTILE (MOBILE) */
-let touchStartX = 0;
-let touchStartY = 0;
+/* CONTROLES MOBILE */
+function bind(btn, key) {
+  btn.addEventListener("touchstart", () => keys[key] = true);
+  btn.addEventListener("touchend", () => keys[key] = false);
+}
 
-document.addEventListener("touchstart", e => {
-  touchStartX = e.touches[0].clientX;
-  touchStartY = e.touches[0].clientY;
-});
+bind(left, "ArrowLeft");
+bind(right, "ArrowRight");
+bind(up, "ArrowUp");
+bind(down, "ArrowDown");
 
-document.addEventListener("touchmove", e => {
-  const dx = e.touches[0].clientX - touchStartX;
-  const dy = e.touches[0].clientY - touchStartY;
-
-  x += dx * 0.05;
-  y += dy * 0.05;
-
-  touchStartX = e.touches[0].clientX;
-  touchStartY = e.touches[0].clientY;
-
-  update();
-});
-
-/* 🔄 MISE À JOUR */
 function update() {
-  x = Math.max(0, Math.min(window.innerWidth - 50, x));
-  y = Math.max(0, Math.min(window.innerHeight - 50, y));
+  if (keys["ArrowLeft"]) santa.x -= santa.speed;
+  if (keys["ArrowRight"]) santa.x += santa.speed;
+  if (keys["ArrowUp"]) santa.y -= santa.speed;
+  if (keys["ArrowDown"]) santa.y += santa.speed;
 
-  player.style.left = x + "px";
-  player.style.top = y + "px";
+  gifts.forEach(gift => {
+    if (!gift.collected &&
+        santa.x < gift.x + gift.size &&
+        santa.x + santa.size > gift.x &&
+        santa.y < gift.y + gift.size &&
+        santa.y + santa.size > gift.y) {
 
-  checkCollision();
-}
-
-/* 💥 COLLISIONS */
-function checkCollision() {
-  gifts.forEach((gift, index) => {
-    const gRect = gift.getBoundingClientRect();
-    const pRect = player.getBoundingClientRect();
-
-    if (
-      pRect.left < gRect.right &&
-      pRect.right > gRect.left &&
-      pRect.top < gRect.bottom &&
-      pRect.bottom > gRect.top
-    ) {
-      gift.remove();
-      gifts.splice(index, 1);
+      gift.collected = true;
       score++;
-      scoreDisplay.textContent = `🎁 ${score} / ${maxScore}`;
+      scoreEl.textContent = score;
 
-      if (score >= maxScore) {
+      if (score === 10) {
         setTimeout(() => {
-          window.location.href = "victory.html";
-        }, 500);
+          alert("🎄 Mission réussie !");
+        }, 300);
       }
     }
   });
 }
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Santa 🎅
+  ctx.font = santa.size + "px serif";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText("🎅", santa.x, santa.y);
+
+  // Gifts 🎁
+  gifts.forEach(gift => {
+    if (!gift.collected) {
+      ctx.drawImage(giftImg, gift.x, gift.y, gift.size, gift.size);
+    }
+  });
+}
+
+function loop() {
+  update();
+  draw();
+  requestAnimationFrame(loop);
+}
+
+loop();
+"; // ➜ mets une image cadeau 🎁
+
+for (let i = 0; i < 10; i++) {
+  gifts.push({
+    x: Math.random() * (canvas.width - 40),
+    y: Math.random() * (canvas.height - 40),
+    size: 40,
+    collected: false
+  });
+}
+
+/* CONTROLES PC */
+window.addEventListener("keydown", e => keys[e.key] = true);
+window.addEventListener("keyup", e => keys[e.key] = false);
+
+/* CONTROLES MOBILE */
+function bind(btn, key) {
+  btn.addEventListener("touchstart", () => keys[key] = true);
+  btn.addEventListener("touchend", () => keys[key] = false);
+}
+
+bind(left, "ArrowLeft");
+bind(right, "ArrowRight");
+bind(up, "ArrowUp");
+bind(down, "ArrowDown");
+
+function update() {
+  if (keys["ArrowLeft"]) santa.x -= santa.speed;
+  if (keys["ArrowRight"]) santa.x += santa.speed;
+  if (keys["ArrowUp"]) santa.y -= santa.speed;
+  if (keys["ArrowDown"]) santa.y += santa.speed;
+
+  gifts.forEach(gift => {
+    if (!gift.collected &&
+        santa.x < gift.x + gift.size &&
+        santa.x + santa.size > gift.x &&
+        santa.y < gift.y + gift.size &&
+        santa.y + santa.size > gift.y) {
+
+      gift.collected = true;
+      score++;
+      scoreEl.textContent = score;
+
+      if (score === 10) {
+        setTimeout(() => {
+          alert("🎄 Mission réussie !");
+        }, 300);
+      }
+    }
+  });
+}
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Santa 🎅
+  ctx.font = santa.size + "px serif";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText("🎅", santa.x, santa.y);
+
+  // Gifts 🎁
+  gifts.forEach(gift => {
+    if (!gift.collected) {
+      ctx.drawImage(giftImg, gift.x, gift.y, gift.size, gift.size);
+    }
+  });
+}
+
+function loop() {
+  update();
+  draw();
+  requestAnimationFrame(loop);
+}
+
+loop();
