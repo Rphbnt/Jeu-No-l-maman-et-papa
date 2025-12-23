@@ -2,28 +2,27 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Mini Aventure de Noël</title>
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Mini aventure de Noël</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1>🎄 Mini aventure de Noël 🎄</h1>
+<h1>🎄 Mini aventure de Noël</h1>
 
 <div id="game">
   <div id="player">🎅</div>
 </div>
 
-<p id="score">🎁 Cadeaux : 0 / 5</p>
-
-<!-- BOUTONS MOBILE -->
-<div id="controls">
-  <button onclick="moveUp()">⬆️</button>
+<!-- Boutons mobile -->
+<div class="controls">
+  <button onclick="move('up')">⬆️</button>
   <div>
-    <button onclick="moveLeft()">⬅️</button>
-    <button onclick="moveRight()">➡️</button>
+    <button onclick="move('left')">⬅️</button>
+    <button onclick="move('down')">⬇️</button>
+    <button onclick="move('right')">➡️</button>
   </div>
-  <button onclick="moveDown()">⬇️</button>
 </div>
 
 <script src="game.js"></script>
