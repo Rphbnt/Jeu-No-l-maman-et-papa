@@ -1,14 +1,13 @@
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-  background: linear-gradient(#0a0a23, #1a1a40);
-  color: white;
+  background: linear-gradient(180deg, #eaf2ff, #ffffff);
   text-align: center;
-  overflow: hidden;
+  user-select: none;
 }
 
 h1 {
-  margin: 10px;
+  margin: 15px 0;
 }
 
 #game {
@@ -17,8 +16,9 @@ h1 {
   max-width: 400px;
   height: 400px;
   margin: auto;
-  background: radial-gradient(circle, #ffffff22, #000000);
+  background: #f5f7fb;
   border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
   overflow: hidden;
 }
 
@@ -34,21 +34,16 @@ h1 {
   font-size: 30px;
 }
 
-#score {
-  margin-top: 10px;
-  font-size: 18px;
-}
-
-#controls {
+.controls {
   margin-top: 15px;
 }
 
-#controls button {
-  font-size: 25px;
-  margin: 5px;
+.controls button {
+  font-size: 24px;
   padding: 10px 15px;
-  border-radius: 15px;
+  margin: 5px;
+  border-radius: 12px;
   border: none;
-  background: #ffffff22;
-  color: white;
+  background: #ffffff;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
