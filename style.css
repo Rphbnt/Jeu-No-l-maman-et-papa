@@ -1,122 +1,75 @@
-/* ===== RESET ===== */
+/* RESET */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  touch-action: manipulation;
 }
 
-html, body {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-}
-
-/* ===== FOND DU JEU (BLEU NOËL) ===== */
+/* PAGE */
 body {
-  background: linear-gradient(180deg, #0b2a4a 0%, #0f4c81 50%, #1b6ca8 100%);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: linear-gradient(180deg, #0a2a5e, #0f4aa8); /* beau bleu */
+  color: white; /* TEXTE BLANC */
+  overflow: hidden;
+  touch-action: manipulation; /* mobile OK */
 }
 
-/* ===== ZONE DE JEU ===== */
+/* TITRE */
+h1 {
+  text-align: center;
+  margin: 15px 0;
+  font-size: 1.8em;
+}
+
+/* ZONE DE JEU */
 #game {
   position: relative;
-  width: 100%;
-  height: 100%;
-  max-width: 900px;
-  max-height: 600px;
-  background: rgba(255,255,255,0.05);
-  border-radius: 20px;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  width: 100vw;
+  height: 70vh;
   overflow: hidden;
 }
 
-/* ===== PÈRE NOËL ===== */
+/* PÈRE NOËL (🎅) */
 #player {
   position: absolute;
-  font-size: 48px;
-  user-select: none;
-  transition: transform 0.1s linear;
+  font-size: 40px;
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%);
 }
 
-/* ===== CADEAUX ===== */
+/* CADEAUX 🎁 */
 .gift {
   position: absolute;
-  font-size: 36px;
-  user-select: none;
-  animation: pop 0.4s ease-out;
+  font-size: 32px;
 }
 
-@keyframes pop {
-  from { transform: scale(0); }
-  to { transform: scale(1); }
-}
-
-/* ===== SCORE ===== */
+/* SCORE */
 #score {
-  position: absolute;
-  top: 15px;
-  left: 15px;
-  color: white;
-  font-size: 18px;
-  background: rgba(0,0,0,0.3);
-  padding: 8px 14px;
-  border-radius: 12px;
-  backdrop-filter: blur(6px);
+  text-align: center;
+  font-size: 1.2em;
+  margin-top: 10px;
 }
 
-/* ===== BOUTONS MOBILE ===== */
-#controls {
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: grid;
-  grid-template-columns: 60px 60px 60px;
-  grid-template-rows: 60px 60px;
-  gap: 10px;
+/* BOUTONS MOBILE */
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 15px;
 }
 
-.control-btn {
-  background: rgba(255,255,255,0.2);
+.controls button {
+  background: rgba(255, 255, 255, 0.15);
   border: none;
-  border-radius: 15px;
   color: white;
   font-size: 22px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  padding: 15px 25px;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
 }
 
-.control-btn:active {
-  transform: scale(0.9);
-}
-
-/* disposition des boutons */
-#up { grid-column: 2; }
-#left { grid-column: 1; grid-row: 2; }
-#down { grid-column: 2; grid-row: 2; }
-#right { grid-column: 3; grid-row: 2; }
-
-/* ===== PC : cache les boutons mobile ===== */
-@media (min-width: 768px) {
-  #controls {
-    display: none;
-  }
-}
-
-/* ===== FLOCONS (OPTION WOW) ===== */
-.snowflake {
-  position: absolute;
-  top: -10px;
-  color: white;
-  opacity: 0.8;
-  pointer-events: none;
-  animation: fall linear infinite;
-}
-
-@keyframes fall {
-  from { transform: translateY(0); }
-  to { transform: translateY(110vh); }
+.controls button:active {
+  transform: scale(0.95);
 }
