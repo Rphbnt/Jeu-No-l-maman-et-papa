@@ -1,192 +1,74 @@
-const canvas = document.getElementById("game");
-const ctx = canvas.getContext("2d");
+const game = document.getElementById("game");
+const player = document.getElementById("player");
+const scoreText = document.getElementById("score");
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
+let x = 180;
+let y = 180;
 let score = 0;
-const scoreEl = document.getElementById("score");
-
-const santa = {
-  x: canvas.width / 2,
-  y: canvas.height / 2,
-  size: 40,
-  speed: 5
-};
-
-const keys = {};
+const totalGifts = 5;
+const speed = 20;
 
 const gifts = [];
-const giftImg = new Image();
-giftImg.src = "const canvas = document.getElementById("game");
-const ctx = canvas.getContext("2d");
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-let score = 0;
-const scoreEl = document.getElementById("score");
-
-const santa = {
-  x: canvas.width / 2,
-  y: canvas.height / 2,
-  size: 40,
-  speed: 5
-};
-
-const keys = {};
-
-const gifts = [];
-const giftImg = new Image();
-giftImg.src = "68324570-gift-box-with-green-ribbon-isolated-on-transparent-background-vector-illustration.jpg"; // ➜ mets une image cadeau 🎁
-
-for (let i = 0; i < 10; i++) {
-  gifts.push({
-    x: Math.random() * (canvas.width - 40),
-    y: Math.random() * (canvas.height - 40),
-    size: 40,
-    collected: false
-  });
+// CRÉATION DES CADEAUX 🎁
+for (let i = 0; i < totalGifts; i++) {
+  const gift = document.createElement("div");
+  gift.classList.add("gift");
+  gift.textContent = "🎁";
+  gift.style.left = Math.random() * 350 + "px";
+  gift.style.top = Math.random() * 350 + "px";
+  game.appendChild(gift);
+  gifts.push(gift);
 }
 
-/* CONTROLES PC */
-window.addEventListener("keydown", e => keys[e.key] = true);
-window.addEventListener("keyup", e => keys[e.key] = false);
-
-/* CONTROLES MOBILE */
-function bind(btn, key) {
-  btn.addEventListener("touchstart", () => keys[key] = true);
-  btn.addEventListener("touchend", () => keys[key] = false);
+function updatePlayer() {
+  player.style.left = x + "px";
+  player.style.top = y + "px";
+  checkCollision();
 }
 
-bind(left, "ArrowLeft");
-bind(right, "ArrowRight");
-bind(up, "ArrowUp");
-bind(down, "ArrowDown");
+function checkCollision() {
+  gifts.forEach((gift, index) => {
+    const gx = gift.offsetLeft;
+    const gy = gift.offsetTop;
 
-function update() {
-  if (keys["ArrowLeft"]) santa.x -= santa.speed;
-  if (keys["ArrowRight"]) santa.x += santa.speed;
-  if (keys["ArrowUp"]) santa.y -= santa.speed;
-  if (keys["ArrowDown"]) santa.y += santa.speed;
-
-  gifts.forEach(gift => {
-    if (!gift.collected &&
-        santa.x < gift.x + gift.size &&
-        santa.x + santa.size > gift.x &&
-        santa.y < gift.y + gift.size &&
-        santa.y + santa.size > gift.y) {
-
-      gift.collected = true;
+    if (Math.abs(x - gx) < 30 && Math.abs(y - gy) < 30) {
+      gift.remove();
+      gifts.splice(index, 1);
       score++;
-      scoreEl.textContent = score;
+      scoreText.textContent = `🎁 Cadeaux : ${score} / ${totalGifts}`;
 
-      if (score === 10) {
+      if (score === totalGifts) {
         setTimeout(() => {
-          alert("🎄 Mission réussie !");
-        }, 300);
+          alert("🎄 Bravo ! Père Noël a livré tous les cadeaux !");
+        }, 200);
       }
     }
   });
 }
 
-function draw() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+// CLAVIER PC
+document.addEventListener("keydown", e => {
+  if (e.key === "ArrowUp") moveUp();
+  if (e.key === "ArrowDown") moveDown();
+  if (e.key === "ArrowLeft") moveLeft();
+  if (e.key === "ArrowRight") moveRight();
+});
 
-  // Santa 🎅
-  ctx.font = santa.size + "px serif";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.fillText("🎅", santa.x, santa.y);
-
-  // Gifts 🎁
-  gifts.forEach(gift => {
-    if (!gift.collected) {
-      ctx.drawImage(giftImg, gift.x, gift.y, gift.size, gift.size);
-    }
-  });
+// FONCTIONS MOBILE + CLAVIER
+function moveUp() {
+  if (y > 0) y -= speed;
+  updatePlayer();
 }
-
-function loop() {
-  update();
-  draw();
-  requestAnimationFrame(loop);
+function moveDown() {
+  if (y < 360) y += speed;
+  updatePlayer();
 }
-
-loop();
-"; // ➜ mets une image cadeau 🎁
-
-for (let i = 0; i < 10; i++) {
-  gifts.push({
-    x: Math.random() * (canvas.width - 40),
-    y: Math.random() * (canvas.height - 40),
-    size: 40,
-    collected: false
-  });
+function moveLeft() {
+  if (x > 0) x -= speed;
+  updatePlayer();
 }
-
-/* CONTROLES PC */
-window.addEventListener("keydown", e => keys[e.key] = true);
-window.addEventListener("keyup", e => keys[e.key] = false);
-
-/* CONTROLES MOBILE */
-function bind(btn, key) {
-  btn.addEventListener("touchstart", () => keys[key] = true);
-  btn.addEventListener("touchend", () => keys[key] = false);
+function moveRight() {
+  if (x < 360) x += speed;
+  updatePlayer();
 }
-
-bind(left, "ArrowLeft");
-bind(right, "ArrowRight");
-bind(up, "ArrowUp");
-bind(down, "ArrowDown");
-
-function update() {
-  if (keys["ArrowLeft"]) santa.x -= santa.speed;
-  if (keys["ArrowRight"]) santa.x += santa.speed;
-  if (keys["ArrowUp"]) santa.y -= santa.speed;
-  if (keys["ArrowDown"]) santa.y += santa.speed;
-
-  gifts.forEach(gift => {
-    if (!gift.collected &&
-        santa.x < gift.x + gift.size &&
-        santa.x + santa.size > gift.x &&
-        santa.y < gift.y + gift.size &&
-        santa.y + santa.size > gift.y) {
-
-      gift.collected = true;
-      score++;
-      scoreEl.textContent = score;
-
-      if (score === 10) {
-        setTimeout(() => {
-          alert("🎄 Mission réussie !");
-        }, 300);
-      }
-    }
-  });
-}
-
-function draw() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  // Santa 🎅
-  ctx.font = santa.size + "px serif";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.fillText("🎅", santa.x, santa.y);
-
-  // Gifts 🎁
-  gifts.forEach(gift => {
-    if (!gift.collected) {
-      ctx.drawImage(giftImg, gift.x, gift.y, gift.size, gift.size);
-    }
-  });
-}
-
-function loop() {
-  update();
-  draw();
-  requestAnimationFrame(loop);
-}
-
-loop();
